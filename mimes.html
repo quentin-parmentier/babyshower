@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Tirage au sort</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				text-align: center;
+				padding-top: 50px;
+			}
+			#result {
+				font-size: 2rem;
+				margin: 20px;
+				color: #2c3e50;
+			}
+			button {
+				padding: 10px 20px;
+				font-size: 1.2rem;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Tirage au sort</h1>
+		<div id="result">Cliquez sur le bouton pour tirer au sort</div>
+		<button id="drawBtn">Tirer au sort</button>
+
+		<script>
+			// Liste de départ
+			let items = [
+				"Tire-lait",
+				"Table à langer",
+				"Chaise haute",
+				"Porter en écharpe",
+				"Tétine perdue",
+				"Écoute-bébé",
+				"Tapis d’éveil",
+				"Mobile au-dessus du lit",
+				"Le Roi Lion",
+				"Là-Haut",
+				"Les Indestructibles",
+				"Toy Story",
+				"Baby Boss",
+				"Monstres et Cie",
+				"Peter Pan",
+				"Bébé qui ne veut pas dormir/Nuit compliqué",
+				"Une scène de crèche/nounou",
+				"Allaitement en public",
+				"Essayer d’installer un siège auto",
+				"Photo d’identité de bébé",
+				"Apprendre à faire du vélo",
+				"Le jour de l’accouchement",
+				"Journée d’anniversaire",
+				"Apprend à cuisiner",
+				"Apprendre une comptine avec des gestes",
+				"Donner le sein",
+				"Chanter une berceuse",
+				"Faire de la balançoire",
+				"Pousser une poussette",
+				"Jouer à cache-cache",
+				"Donner le bain",
+				"Secouer un hochet",
+			];
+
+			const resultDiv = document.getElementById("result");
+			const drawBtn = document.getElementById("drawBtn");
+
+			drawBtn.addEventListener("click", () => {
+				if (items.length === 0) {
+					resultDiv.textContent = "Tous les éléments ont été tirés.";
+					drawBtn.disabled = true;
+					return;
+				}
+
+				// Tirage au sort d'un index
+				const index = Math.floor(Math.random() * items.length);
+				const drawnItem = items.splice(index, 1)[0]; // Retire l'élément de la liste
+
+				resultDiv.textContent = `Tiré au sort : ${drawnItem}`;
+			});
+		</script>
+	</body>
+</html>

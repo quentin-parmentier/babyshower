@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Tirage par points</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				text-align: center;
+				padding-top: 50px;
+			}
+			#result {
+				font-size: 2rem;
+				margin: 20px;
+				color: #2c3e50;
+			}
+			button {
+				padding: 10px 20px;
+				font-size: 1.2rem;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Tirage au sort par points</h1>
+		<div id="result">Cliquez sur le bouton pour commencer</div>
+		<button id="drawBtn">Tirer au sort</button>
+
+		<script>
+			const un = [
+				"Quel est le nom du lait produit par la mère juste après l'accouchement ?→ Le colostrum",
+				"Combien de mois dure une grossesse en moyenne en semaine ?→ 40-41",
+				"Quel est le prénom du bébé de Meghan Markle et du prince Harry né en 2019 ?→ Archie",
+				"Comment appelle-t-on le médecin spécialisé dans les grossesses ?→ Un gynécologue-obstétricien",
+				"Quel est le prénom du bébé des Simpson ?→ Maggie",
+				"Quel vêtement de bébé est souvent fermé par des pressions à l’entrejambe ?→ Un body",
+				"Quel est le nom de la position de sommeil recommandée pour prévenir la mort subite du nourrisson ?→ Sur le dos",
+				"Quel super-héros a élevé un enfant nommé Jonathan Kent dans certaines versions ?→ Superman",
+				"Quel est le nom du meuble où l'on change les couches du bébé ?→ La table à langer",
+				"Quel est l’animal emblématique de Sophie ?→ La girafe (facile 😄)",
+				"Quel est le mot utilisé pour parler d’un bébé né avant le terme ?→ Prématuré",
+				"Quel animal apporte les bébés dans les histoires de naissance pour enfant ?→ La cigogne",
+				"Par quel verbe désigne-t-on l’action de nourrir un bébé au sein ?→ Allaiter",
+			];
+			const deux = [
+				"À partir de quel mois un bébé commence-t-il généralement à tenir assis sans appui ?→ Vers 6 mois",
+				"Quel test est utilisé en maternité pour évaluer l’état de santé immédiat d’un nouveau-né ?→ Le score d’Apgar",
+				"Que signifie l’acronyme “PMA” dans le domaine de la maternité ?→ Procréation Médicalement Assistée",
+				"Quelle est la durée légale du congé maternité en France pour un premier enfant (hors pathologie ou grossesse multiple) ?→ 16 semaines (6 avant, 10 après)",
+				"Quel célèbre objet de puériculture a inspiré le nom d’une danse populaire des années 2000 ?→ Le youpala",
+				"Quelle est la première dent à apparaître en général chez un bébé ?→ Une incisive",
+				"Quel est le réflexe primitif que fait que bébé quand il serre votre doigt ?→ Le réflexe de préhension",
+				"Quel mot désigne l’arrêt de l’allaitement, qu’il soit naturel ou provoqué ?→ Le sevrage",
+				"Quelle chanteuse a sorti l’album “Blue” inspiré de sa maternité ?→ Beyoncé",
+				"Quel examen prénatal permet de dépister certaines anomalies génétiques comme la trisomie 21 ?→ La mesure de la clarté nucale (échographie du 1er trimestre)",
+				"A quelle date est apparu le congé paternité en France ?→ 1 janvier 2002 - La loi de financement de la sécurité sociale",
+				"Quel est le nom de la méthode d’éducation bienveillante développée par Maria Montessori ?→ La pédagogie Montessori",
+				"En 2022, quel prénom a été le plus donné aux petites filles en France ?→ Jade",
+			];
+			const trois = [
+				"Comment s'appelle la méthode d'accouchement qui utilise l'immersion dans l'eau ?→ L'accouchement aquatique",
+				"Quel est le nom de la position du bébé tête en haut dans l’utérus, peu avant l’accouchement ?→ Présentation en siège",
+				"Quel est le nom de l’hormone qui déclenche les contractions et favorise l’attachement mère-enfant ?→ L’ocytocine",
+				"Dans quelle ville française se trouve la maternité de Port-Royal, célèbre centre hospitalier universitaire ?→ Paris",
+				"Comment appelle-t-on l'épisode (souvent nocturne) où bébé hurle sans raison apparente et met ses parents au bord de la crise de nerfs ?→ La crise de décharge",
+				"Quel est le surnom affectueux qu’on donne parfois au premier caca du bébé, très noir et collant ?→ Le méconium",
+				"Quel est le nom du test sanguin réalisé au talon du nouveau-né pour détecter des maladies rares ?→ Le test de Guthrie",
+				"Quelle hormone est inhibée par la lumière et favorise le sommeil ?→ La mélatonine",
+				"Quel est le terme médical pour désigner les douleurs de règles qui peuvent persister après l'accouchement, notamment pendant l'allaitement ?→ Les tranchées utérines",
+				"Quel est le nom de la procédure qui permet de recueillir et congeler les ovocytes pour une grossesse future ?→ La vitrification ovocytaire",
+				"Quelle vitamine est administrée à la naissance pour prévenir les hémorragies chez le nouveau-né ?→ La vitamine K",
+				"Quel est le nom du réflexe archaïque où le bébé écarte les bras quand il est surpris ?→ Le réflexe de Moro",
+				"Quel est le terme médical pour désigner les vomissements fréquents du nourrisson après les repas ?→ Le reflux gastro-œsophagien (ou RGO)",
+			];
+
+			// Catégories avec les éléments
+			const categories = {
+				"1 point": un,
+				"2 points": deux,
+				"3 points": trois,
+			};
+
+			const categoryOrder = ["1 point", "2 points", "3 points"];
+			let currentCategoryIndex = 0;
+
+			const resultDiv = document.getElementById("result");
+			const drawBtn = document.getElementById("drawBtn");
+
+			drawBtn.addEventListener("click", () => {
+				let tries = 0;
+				let drawnItem = null;
+
+				// On boucle au cas où une catégorie serait vide
+				while (tries < categoryOrder.length) {
+					const currentCategory = categoryOrder[currentCategoryIndex];
+					const items = categories[currentCategory];
+
+					if (items.length > 0) {
+						const index = Math.floor(Math.random() * items.length);
+						drawnItem = items.splice(index, 1)[0]; // On retire l'élément
+						resultDiv.innerHTML = `Catégorie : <br> ${currentCategory} <br><br><br>  <b>Question</b> <br> <br> ${drawnItem.replace(
+							"→",
+							"<br>",
+						)}`;
+						currentCategoryIndex =
+							(currentCategoryIndex + 1) % categoryOrder.length;
+						return;
+					} else {
+						// Catégorie vide, on passe à la suivante
+						currentCategoryIndex =
+							(currentCategoryIndex + 1) % categoryOrder.length;
+						tries++;
+					}
+				}
+
+				resultDiv.textContent = "Toutes les questions ont été tirées.";
+				drawBtn.disabled = true;
+			});
+		</script>
+	</body>
+</html>
